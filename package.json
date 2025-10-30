@@ -1,0 +1,18 @@
+{
+  "name": "webapp-express",
+  "version": "1.0.0",
+  "description": "webapp",
+  "license": "ISC",
+  "author": "alessandro iacovelli",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "watch": "npm --watch app.js",
+    "start": "app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "mysql2": "^3.15.3"
+  }
+}
