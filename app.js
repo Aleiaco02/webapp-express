@@ -1,5 +1,6 @@
 import express from 'express';
 import movieRouters from './routers/movieRouters.js';
+import cors from "cors";
 
 // import middleware gestione errori
 import errorsHandler from './middlewares/errorServer.js';
@@ -19,6 +20,10 @@ app.use(express.json());
 
 // utilizzo middleware getione immagini
 app.use(setImagePath);
+
+app.use(cors({
+    origin: process.env.FE_APP
+}));
 
 // rotta di partenza
 app.get("/api", (req, res) => {

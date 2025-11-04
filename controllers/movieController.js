@@ -10,8 +10,16 @@ export function index(req, res) {
     connection.query(sql, (err, result) => {
         // gestiamo errore server mysql
         if (err) return res.status(500).json({ error: "Database error" });
+
+        const movies = result.map(movie => {
+            return {
+                ...movie,
+                image: req.imagePath + movie.image
+            }
+        });
+
         // ritorniamo il risultato ottenuto
-        res.json(result);
+        res.json(movies);
     });
 }
 
