@@ -1,5 +1,5 @@
 import express from 'express';
-import { index, show } from '../controllers/movieController.js';
+import { index, show, store } from '../controllers/movieController.js';
 
 
 const router = express.Router();
@@ -11,7 +11,7 @@ router.get('/', index);
 router.get('/:id', show);
 
 // store
-// router.post('/', store);
+router.post('/:id/reviews', store);
 
 // update
 // router.put('/:id', update);

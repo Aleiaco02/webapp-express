@@ -30,7 +30,13 @@ export function show(req, res) {
     const id = req.params.id;
 
     // prepariamo query per singolo film
-    const moviesSql = 'SELECT * FROM movies WHERE id = ?';
+    const moviesSql = `
+    SELECT M.*, ROUND(AVG(R.vote)) AS average_vote
+    FROM movies M
+    LEFT JOIN reviews R
+    ON R.movie_id = M.id
+    WHERE M.id = ?
+    `;
 
     // prepariamo la query per reviews del film
     const reviewSql = 'SELECT * FROM reviews WHERE movie_id = ?';
@@ -54,8 +60,32 @@ export function show(req, res) {
             // aggiungiamo le reviews sull'oggetto del singolo film
             singleMovies.reviews = reviewResult;
 
+            singleMovies.average_vote = parseInt(singleMovies.average_vote);
+
+
             // ritorniamo il risultato ottenuto
             res.json(singleMovies);
         });
     });
+}
+
+export function store(req, res) {
+    // recuperiamo id da param
+    const id = req.params.id;
+
+    // recuperiamo i dati nel body
+    const { name, vote, text } = req.body;
+
+    // prepariamo la query per la chiamata al DB
+    const sql = 'INSERT INTO `reviews` (`name`, `vote`, `text`, `movie_id`) VALUES (?,?,?,?)';
+
+    connection.query(sql, [name, vote, text, id], (err, result) => {
+        // se c'è errore server DB
+        if (err) return res.status(500).json({ error: 'Database query failed' });
+        // se va tutto bene
+        res.status(201);
+        res.json({ id: result.insertId, message: 'Review added' });
+    })
+
+
 }
